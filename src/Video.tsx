@@ -1,19 +1,21 @@
-import {Composition} from 'remotion';
-import {Short} from './Short';
+import { Composition } from 'remotion';
+import { Short } from './Short';
+import data from './assets/data.json';
+
 
 export const RemotionVideo: React.FC = () => {
 	return (
 		<>
-		{/* <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'></link> */}
 			<Composition
 				id="Short"
 				component={Short}
-				durationInFrames={1740}
+				durationInFrames={data.durationInFrames}
 				fps={30}
 				width={1080}
 				height={1920}
 				defaultProps={{
-					youtubeUrl: 'https://www.youtube.com/embed/kLdOKv1ktJs?start=13&amp;end=71'
+					videoFileName: 'neto-cotonete.mp4',
+					text: 'COTONETE BÃO É DA DIONSO E DIONSO',
 				}}
 			/>
 		</>
