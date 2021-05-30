@@ -38,23 +38,22 @@ async function run() {
 
     const { id } = ytResponse;
     const filename = `${id}-${from}-${to}-${slugify(text)}.mp4`;
-    const assetsPath = './src/assets';
+    const filePath = path.join(__dirname, `./.data/${filename}`);
 
-    if (!fs.existsSync(`${assetsPath}/${filename}`)) {
+    if (!fs.existsSync(`${filePath}`)) {
       console.log("> Starting dowload and convert");
       const { url } = ytResponse.formats.find(format => format.format_note == '360p' && format.asr) || {};
-      await exec(`ffmpeg -ss ${from} -i "${url}" -t ${durationInSeconds} -c copy ${assetsPath}/${filename}`);
+      await exec(`ffmpeg -ss ${from} -i "${url}" -t ${durationInSeconds} -c copy ${filePath}`);
       console.log("> Video has downloaded and converted!");
     }
 
     console.log("> Starting rendering video");
     const compositionId = 'Short';
     const props = {
-      videoFileName: filename,
-      text: argv.text
+      videoFileName: filePath,
+      text: argv.text,
+      durationInFrames: durationInSeconds * 30
     };
-    const data = { durationInFrames: durationInSeconds * 30 };
-    await exec(`echo '${JSON.stringify(data)}' > ${assetsPath}/data.json`);
     const bundled = await bundle(path.join(__dirname, './src/index.tsx'));
     const comps = await getCompositions(bundled, { inputProps: props });
     const video = comps.find((c) => c.id === compositionId);
@@ -105,6 +104,7 @@ async function run() {
     await axios.post(url, form, { headers, maxContentLength: Infinity, maxBodyLength: Infinity });
 
     console.log('> Video sent!');
+    await exec(`rm ${filePath}`);
 
     process.exit(0);
   } catch (error) {

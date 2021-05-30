@@ -1,7 +1,7 @@
-import { Composition } from 'remotion';
+import { getInputProps, Composition } from 'remotion';
 import { Short } from './Short';
-import data from './assets/data.json';
 
+const inputProps = getInputProps();
 
 export const RemotionVideo: React.FC = () => {
 	return (
@@ -9,12 +9,12 @@ export const RemotionVideo: React.FC = () => {
 			<Composition
 				id="Short"
 				component={Short}
-				durationInFrames={data.durationInFrames}
+				durationInFrames={inputProps.durationInFrames || 1000}
 				fps={30}
 				width={1080}
 				height={1920}
 				defaultProps={{
-					videoFileName: 'neto-cotonete.mp4',
+					videoFilePath: './assets/neto-cotonete.mp4',
 					text: 'COTONETE BÃO É DA DIONSO E DIONSO',
 				}}
 			/>

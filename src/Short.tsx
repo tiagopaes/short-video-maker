@@ -1,7 +1,7 @@
 import { Img, useVideoConfig, Video } from 'remotion';
 import logo from './assets/logo-white-200x200.png';
 
-export const Short: React.FC<{ videoFileName: string; text: string }> = ({ videoFileName, text }) => {
+export const Short: React.FC<{ videoFilePath: string; text: string }> = ({ videoFilePath, text }) => {
   const videoConfig = useVideoConfig();
 
   return (
@@ -27,7 +27,7 @@ export const Short: React.FC<{ videoFileName: string; text: string }> = ({ video
         }}
       >{text}</div>
       <Video
-        src={require(`./assets/${videoFileName}`)}
+        src={require(videoFilePath)}
         startFrom={0}
         endAt={videoConfig.durationInFrames}
         style={{ width: videoConfig.width }}
