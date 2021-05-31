@@ -19,12 +19,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 const exec = util.promisify(child_process.exec);
 const argv = minimist(process.argv.slice(2));
+const { youtubeUrl, from, to, text, chatId } = argv;
 
 run();
 
 async function run() {
   try {
-    const { youtubeUrl, from, to, text } = argv;
     const durationInSeconds = toSeconds(from, to);
     const ytResponse = await youtubedl(youtubeUrl, {
       dumpSingleJson: true,
@@ -38,7 +38,7 @@ async function run() {
 
     const { id } = ytResponse;
     const filename = `${id}-${from}-${to}-${slugify(text)}.mp4`;
-    const filePath = path.join(__dirname, `./.data/${filename}`);
+    const filePath = path.join(__dirname, `./../.data/${filename}`);
 
     if (!fs.existsSync(`${filePath}`)) {
       console.log("> Starting dowload and convert");
@@ -50,11 +50,11 @@ async function run() {
     console.log("> Starting rendering video");
     const compositionId = 'Short';
     const props = {
-      videoFileName: filePath,
+      videoFileName: filename,
       text: argv.text,
       durationInFrames: durationInSeconds * 30
     };
-    const bundled = await bundle(path.join(__dirname, './src/index.tsx'));
+    const bundled = await bundle(path.join(__dirname, './../src/index.tsx'));
     const comps = await getCompositions(bundled, { inputProps: props });
     const video = comps.find((c) => c.id === compositionId);
     if (!video) {
@@ -99,7 +99,7 @@ async function run() {
     const form = new FormData();
     form.append('video', fs.createReadStream(finalOutput));
     form.append('caption', text);
-    form.append('chat_id', process.env.TELEGRAM_CHAT_ID);
+    form.append('chat_id', chatId || process.env.TELEGRAM_CHAT_ID);
     const headers = form.getHeaders();
     await axios.post(url, form, { headers, maxContentLength: Infinity, maxBodyLength: Infinity });
 
@@ -109,6 +109,13 @@ async function run() {
     process.exit(0);
   } catch (error) {
     console.log(error);
+    const url = `${process.env.TELEGRAM_API_URL}/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
+    const form = new FormData();
+    form.append('text', 'Ooops, unexpected error occurred');
+    form.append('chat_id', chatId || process.env.TELEGRAM_CHAT_ID);
+    const headers = form.getHeaders();
+    await axios.post(url, form, { headers, maxContentLength: Infinity, maxBodyLength: Infinity });
+
     process.exit(1);
   }
 }

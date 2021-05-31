@@ -9,12 +9,12 @@ export const RemotionVideo: React.FC = () => {
 			<Composition
 				id="Short"
 				component={Short}
-				durationInFrames={inputProps.durationInFrames || 1000}
+				durationInFrames={inputProps?.durationInFrames ?? 20}
 				fps={30}
 				width={1080}
 				height={1920}
 				defaultProps={{
-					videoFilePath: './assets/neto-cotonete.mp4',
+					videoFileName: 'neto-cotonete.mp4',
 					text: 'COTONETE BÃO É DA DIONSO E DIONSO',
 				}}
 			/>
