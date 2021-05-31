@@ -6,7 +6,7 @@
 		"start": "remotion preview src/index.tsx",
 		"build": "remotion render src/index.tsx Short out.mp4",
 		"upgrade": "remotion upgrade",
-		"server": "ts-node build.tsx",
+		"server": "ts-node server/server.tsx",
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc"
 	},
 	"repository": {},
