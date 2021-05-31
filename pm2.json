@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "name": "short-video-maker",
+            "script": "npm",
+            "args" : "run server"
+        }
+    ]
+}
