@@ -30,7 +30,7 @@ async function run() {
     const filePath = path.join(__dirname, `./.data/${filename}`);
 
     console.log("> Starting dowload and convert");
-    const { url } = ytResponse.formats.find(format => format.format_note == '360p' && format.asr) || {};
+    const { url } = ytResponse.formats.filter(format => format.asr).slice(-1).pop() || {};
     const command = `ffmpeg -ss ${from} -i "${url}" -t ${durationInSeconds} -c copy ${filePath}`;
     execSync(command, { cwd: __dirname, stdio: 'inherit' });
     console.log("> Video has downloaded!");
