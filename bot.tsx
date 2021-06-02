@@ -1,18 +1,18 @@
 import { Request, Response } from 'express';
 import { Telegraf } from 'telegraf';
-import util from 'util';
-import child_process from 'child_process';
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
-const exec = util.promisify(child_process.exec);
+const { GITHUB_TOKEN, GITHUB_REPO, GITHUB_OWNER, TELEGRAM_BOT_TOKEN } = process.env;
 
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
+const bot = new Telegraf(TELEGRAM_BOT_TOKEN as string);
 
 const createVideoCommand = '/createShort';
 
 bot.command(createVideoCommand, createShortVideo);
 bot.catch(errorHandler);
+bot.launch();
 
 async function createShortVideo(ctx: any) {
   const message = (ctx.message.text as string);
@@ -29,8 +29,21 @@ async function createShortVideo(ctx: any) {
 
   ctx.reply('Starting rendering video..');
 
-  const command = __dirname + '/../node_modules/.bin/ts-node ' + __dirname + '/build.tsx';
-  exec(`${command} --youtubeUrl=${youtubeUrl} --from=${from} --to=${to} --text="${text}" --chatId=${ctx.message.chat.id}`);
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`;
+  const headers = {
+    'Authorization': `Bearer ${GITHUB_TOKEN}`
+  };
+  const data = {
+    event_type: 'render',
+    client_payload: {
+      youtubeUrl,
+      from,
+      to,
+      text,
+      chatId: ctx.message.chat.id,
+    }
+  };
+  await axios.post(url, data, {headers});
 }
 
 function errorHandler(err: unknown, ctx: any) {

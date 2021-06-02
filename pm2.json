@@ -3,7 +3,7 @@
         {
             "name": "short-video-maker",
             "script": "npm",
-            "args" : "run server"
+            "args" : "run bot"
         }
     ]
 }

@@ -1,27 +1,6 @@
 on:
   repository_dispatch:
 
-  # workflow_dispatch:
-    # inputs:
-    #   youtubeUrl:
-    #     description: "Youtube Url"
-    #     required: true
-    #   from:
-    #     description: "From"
-    #     required: true
-    #     default: "00:00:00.00"
-    #   to:
-    #     description: "To"
-    #     required: true
-    #     default: "00:00:03.00"
-    #   text:
-    #     description: "Text"
-    #     required: true
-    #     default: " "
-    #   chatId:
-    #     description: "Telegram chat id"
-    #     required: true
-    #     default: ${{ secrets.TELEGRAM_CHAT_ID }}
 name: Render video
 jobs:
   render:
