@@ -6,7 +6,7 @@
 		"start": "remotion preview src/index.tsx",
 		"build": "remotion render src/index.tsx Short out.mp4",
 		"upgrade": "remotion upgrade",
-		"server": "ts-node server/server.tsx",
+		"server": "ts-node server.tsx",
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc"
 	},
 	"repository": {},
@@ -29,7 +29,6 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"remotion": "^2.0.0",
-		"slugify": "^1.5.3",
 		"telegraf": "^4.3.0",
 		"ts-node": "^9.1.1",
 		"typescript": "^4.2.3",

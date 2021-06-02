@@ -9,7 +9,6 @@ import os from 'os';
 import path from 'path';
 import youtubedl from 'youtube-dl-exec';
 import minimist from 'minimist';
-import slugify from 'slugify';
 import axios from 'axios';
 import FormData from 'form-data';
 import util from 'util';
@@ -35,9 +34,7 @@ async function run() {
       youtubeSkipDashManifest: true,
       referer: youtubeUrl
     });
-
-    const { id } = ytResponse;
-    const filename = `${id}-${from}-${to}-${slugify(text)}.mp4`;
+    const filename = `${Date.now()}.mp4`;
     const filePath = path.join(__dirname, `./../.data/${filename}`);
 
     if (!fs.existsSync(`${filePath}`)) {

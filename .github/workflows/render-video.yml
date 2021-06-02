@@ -1,14 +1,27 @@
 on:
-  workflow_dispatch:
-    inputs:
-      titleText:
-        description: "Which text should it say?"
-        required: true
-        default: "Welcome to Remotion"
-      titleColor:
-        description: "Which color should it be in?"
-        required: true
-        default: "black"
+  repository_dispatch:
+
+  # workflow_dispatch:
+    # inputs:
+    #   youtubeUrl:
+    #     description: "Youtube Url"
+    #     required: true
+    #   from:
+    #     description: "From"
+    #     required: true
+    #     default: "00:00:00.00"
+    #   to:
+    #     description: "To"
+    #     required: true
+    #     default: "00:00:03.00"
+    #   text:
+    #     description: "Text"
+    #     required: true
+    #     default: " "
+    #   chatId:
+    #     description: "Telegram chat id"
+    #     required: true
+    #     default: ${{ secrets.TELEGRAM_CHAT_ID }}
 name: Render video
 jobs:
   render:
@@ -20,10 +33,4 @@ jobs:
       - run: sudo apt update
       - run: sudo apt install ffmpeg
       - run: npm i
-      - run: npm run build -- --props="$WORKFLOW_INPUT"
-        env:
-          WORKFLOW_INPUT: ${{ toJson(github.event.inputs) }}
-      - uses: actions/upload-artifact@v2
-        with:
-          name: out.mp4
-          path: out.mp4
+      - run: npm run server -- --youtubeUrl='${{github.event.client_payload.youtubeUrl}}' --from=${{github.event.client_payload.from}} --to=${{github.event.client_payload.to}} --text='${{github.event.client_payload.text}}' --chatId=${{github.event.client_payload.chatId}}
