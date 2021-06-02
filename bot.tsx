@@ -30,9 +30,7 @@ async function createShortVideo(ctx: any) {
   ctx.reply('Starting rendering video..');
 
   const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`;
-  const headers = {
-    'Authorization': `Bearer ${GITHUB_TOKEN}`
-  };
+  const headers = { 'Authorization': `Bearer ${GITHUB_TOKEN}` };
   const data = {
     event_type: 'render',
     client_payload: {
@@ -43,7 +41,7 @@ async function createShortVideo(ctx: any) {
       chatId: ctx.message.chat.id,
     }
   };
-  await axios.post(url, data, {headers});
+  await axios.post(url, data, { headers });
 }
 
 function errorHandler(err: unknown, ctx: any) {
