@@ -15,16 +15,10 @@ on:
       text:
         description: "Text"
         required: true
-        default: " "
-      chatId:
-        description: "Telegram chat id"
-        required: true
-        default: ${{ secrets.TELEGRAM_CHAT_ID }}
       cta:
         description: 'CTA'
         required: true
-        options: ['none', 'como-ganhar-dinheiro-na-internet.mp4']
-        default: 'none'
+        default: 'como-ganhar-dinheiro-na-internet.mp4'
 
 name: Render video
 jobs:

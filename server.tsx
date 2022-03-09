@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const argv = minimist(process.argv.slice(2));
-const { youtubeUrl, from, to, text, chatId, cta } = argv;
+const { youtubeUrl, from, to, text, cta } = argv;
 
 run();
 
@@ -52,7 +52,7 @@ async function run() {
     const form = new FormData();
     form.append('video', fs.createReadStream(output));
     form.append('caption', text);
-    form.append('chat_id', chatId || process.env.TELEGRAM_CHAT_ID);
+    form.append('chat_id', process.env.TELEGRAM_CHAT_ID);
     const headers = form.getHeaders();
     await axios.post(telegramUrl, form, { headers, maxContentLength: Infinity, maxBodyLength: Infinity });
 
@@ -65,7 +65,7 @@ async function run() {
     const telegramUrl = `${process.env.TELEGRAM_API_URL}/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
     const form = new FormData();
     form.append('text', 'Ooops, unexpected error occurred');
-    form.append('chat_id', chatId || process.env.TELEGRAM_CHAT_ID);
+    form.append('chat_id', process.env.TELEGRAM_CHAT_ID);
     const headers = form.getHeaders();
     await axios.post(telegramUrl, form, { headers, maxContentLength: Infinity, maxBodyLength: Infinity });
 
