@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const argv = minimist(process.argv.slice(2));
-const { youtubeUrl, from, to, text, chatId } = argv;
+const { youtubeUrl, from, to, text, chatId, cta } = argv;
 
 run();
 
@@ -37,8 +37,9 @@ async function run() {
 
     const props = {
       videoFileName: filename,
-      text: text,
-      durationInFrames: durationInSeconds * 30
+      text,
+      durationInFrames: durationInSeconds * 30,
+      cta
     };
     const buildCommand = `npm run build -- --props='${JSON.stringify(props)}'`;
     execSync(buildCommand, { cwd: __dirname, stdio: 'inherit' });

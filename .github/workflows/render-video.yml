@@ -1,5 +1,30 @@
 on:
-  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      youtubeUrl:
+        description: "Youtube Url"
+        required: true
+      from:
+        description: "From"
+        required: true
+        default: "00:00:00.00"
+      to:
+        description: "To"
+        required: true
+        default: "00:00:03.00"
+      text:
+        description: "Text"
+        required: true
+        default: " "
+      chatId:
+        description: "Telegram chat id"
+        required: true
+        default: ${{ secrets.TELEGRAM_CHAT_ID }}
+      cta:
+        description: 'CTA'
+        required: true
+        options: ['none', 'como-ganhar-dinheiro-na-internet.mp4']
+        default: 'none'
 
 name: Render video
 jobs:
@@ -16,4 +41,4 @@ jobs:
       - run: sudo apt update
       - run: sudo apt install ffmpeg
       - run: npm i
-      - run: npm run server -- --youtubeUrl='${{github.event.client_payload.youtubeUrl}}' --from=${{github.event.client_payload.from}} --to=${{github.event.client_payload.to}} --text='${{github.event.client_payload.text}}' --chatId=${{github.event.client_payload.chatId}}
+      - run: npm run server -- --youtubeUrl='${{github.event.inputs.youtubeUrl}}' --from=${{github.event.inputs.from}} --to=${{github.event.inputs.to}} --text='${{github.event.inputs.text}}' --chatId=${{github.event.inputs.chatId}} --cta=${{github.event.inputs.cta}}
